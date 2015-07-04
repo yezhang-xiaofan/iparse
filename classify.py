@@ -14,13 +14,13 @@ from sklearn.metrics import f1_score, precision_score,recall_score
 from pymedtermino import *
 from pymedtermino.snomedct import *
 import re
+from normalize import normalize
 from geniatagger import *
+import drugbank
 tagger = GeniaTagger('/Users/zhangye/Documents/Study/UTAustin/study/causal_Statement/geniatagger-3.0.1/geniatagger')
-print tagger.parse('This is a pen.')
-
-concept = SNOMEDCT[302509004]
-SNOMEDCT.has_concept(302509004)
+drug_find = drugbank.Drugbank()
 file_dict = {}
+print tagger.parse("DRUG or DRUG MEASURE_UNIT")
 for file in os.listdir(dir):
     if(not file.endswith('.txt')): continue
     name_key = file.split('.')[0]
@@ -29,6 +29,7 @@ for file in os.listdir(dir):
     label_value = []
     for c in cur:
         c = c.decode('ascii',errors = 'ignore')
+        #normalize strings
         content_value.append(c.strip()[:-1])
         label_value.append(int(c.split('\t')[-1].strip()))
     file_dict[name_key] = (content_value,label_value)
@@ -45,7 +46,10 @@ index_map = {}
 start_index = 0
 
 for i, name in enumerate(file_names):
-    all_sentences += file_dict[name][0]
+    temp_sen = [drug_find.sub(f) for f in file_dict[name][0]]
+    temp_sen = [normalize(t) for t in temp_sen]
+
+    all_sentences += temp_sen
     all_labels += file_dict[name][1]
     for j in range(len(file_dict[name][0])):
         position_feature.append(j)
@@ -65,6 +69,7 @@ def pos_to_string(sentence):    #convert a sentence into a sequence of POS tagge
 for i, name in enumerate(file_names):
     sentences = file_dict[name][0]
     num_sen = len(sentences)
+    print name
     for j in range(num_sen):
         if(j==0):
             print name

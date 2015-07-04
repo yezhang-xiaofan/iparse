@@ -23,10 +23,10 @@ def file_sen(dir=dir):
                 if("tags: []" in c and "- " not in c): break
                 if("- - !!python/unicode" in c or '- - "' in c):
                     if(sen_no==0):
-                        current_sen += c.strip()
+                        current_sen += " "+c.strip()
                     else:
                         sentences.append(current_sen)
-                        current_sen = c.strip()
+                        current_sen = " " + c.strip()
                     sen_no += 1
                 elif("- tags: " in c):
                     if("iparse" in c):
@@ -35,7 +35,7 @@ def file_sen(dir=dir):
                     else:
                         labels.append(0)
                 else:
-                    current_sen += c.strip()
+                    current_sen += " " + c.strip()
             sentences.append(current_sen)
 
         if has_iparse==True:

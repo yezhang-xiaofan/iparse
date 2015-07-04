@@ -36,7 +36,8 @@ class Drugbank:
         for drug_entity in drug_entities:
 
             output.extend(tokens[last_marker:drug_entity[1]])
-            output.append(drug_entity[0])
+            #output.append(drug_entity[0])
+            output.append("DRUG")
             last_marker = drug_entity[2]+1
 
         output.extend(tokens[last_marker:])
@@ -109,8 +110,9 @@ def main():
     print drugbank.contains_drug(test_text)
 
     
-    test_text = "The multinational, randomized, double-blind, placebo-controlledEvaluating Prevention of Progression in CKD (EPPIC)-1 and EPPIC-2 trials evaluatedthe effects of AST-120 on the progression of CKD when added to standard therapy."
-    print test_text
+    test_text = 'We randomly assigned 2035 adults with moderate to severedisease (serum creatinine \
+              at screening, 2.0-5.0 mg/dl for men and\
+            1.5-5.0mg/dl for women) to receive either placebo or AST-120 (9 g/d).'
     print
     print drugbank.sub(test_text)
     print drugbank.contains_drug(test_text)
