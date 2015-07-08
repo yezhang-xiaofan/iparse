@@ -30843,7 +30843,7 @@
     - - "Parallel-group, randomized, double-blind, placebo-controlled clinical trial\
         \ of 16 weeks of treatment with 2 mg of folic acid and 400 \u03BCg of vitamin\
         \ B12."
-      - tags: [ye:iparse]
+      - tags: []
     - - !!python/unicode 'Three community mental health centers affiliated with academic
         medical centers in the United States.'
       - tags: []
@@ -30856,7 +30856,7 @@
       - tags: []
     - - !!python/unicode 'One hundred forty subjects were randomized to receive daily
         oral folic acid plus vitamin B12 or placebo.'
-      - tags: []
+      - tags: [ye:iparse]
     - - !!python/unicode 'Change in negative symptoms (Scale for the Assessment of
         Negative Symptoms [SANS]), as well as positive and total symptoms (Positive
         and Negative Syndrome Scale).'
