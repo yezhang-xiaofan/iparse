@@ -97,25 +97,19 @@ class Drugbank:
 
         return output
 
+    def is_in_Drugbank(self,token):
+        print type(self.data)
+        return token in self.data
+
 def main():
     drugbank = Drugbank()
 
-    test_text = """
-    Here is some text which mentions tylenol, ibuprofen, quinine, and valproic acid.
-    """
-
-    print test_text
+    test_text = 'After drug washout and a 1- to 3-week antipsychotic-free period, patients were\
+            randomized to treatment with clozapine (n = 12) or olanzapine (n = 13).'
     print
-    print drugbank.sub(test_text)
-    print drugbank.contains_drug(test_text)
-
-    
-    test_text = 'We randomly assigned 2035 adults with moderate to severedisease (serum creatinine \
-              at screening, 2.0-5.0 mg/dl for men and\
-            1.5-5.0mg/dl for women) to receive either placebo or AST-120 (9 g/d).'
-    print
-    print drugbank.sub(test_text)
-    print drugbank.contains_drug(test_text)
+    #print drugbank.sub(test_text)
+    #print drugbank.contains_drug(test_text)
+    print drugbank.is_in_Drugbank('AST-120')
 
 
 

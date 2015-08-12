@@ -1,19 +1,20 @@
 __author__ = 'zhangye'
 import re
 import drugbank
+from pymedtermino import *
+from pymedtermino.snomedct import *
+from geniatagger import *
+
 def normalize(input,drug):
     #replace drug name by "DRUG"
-    input = input.decode('unicode-escape')
-    input = input.encode('ascii','ignore')
-
     input = drug.sub(input)
 
-    p1 = re.compile("\d+\.*\d+\s*-\s*\d+\.*\d+")
+    p1 = re.compile("\d+(\.*\d+)*\s*-\s*\d+(\.*\d+)*")
     input = p1.sub(' MEASURE_RANGE ',input)
 
 #match measure   eg. mug/d
     before_slash = ["g","mg","kg","ng","ug",'mug','microg','mcg']
-    after_slash = ["d","dl","h","day","ml",'kg']
+    after_slash = ["day","dl","d","h","ml",'kg']
     before = '|'.join(before_slash)
     after = '|'.join(after_slash)
     p2 = re.compile('('+before+')'+'/'+'('+after+')',re.IGNORECASE)
@@ -25,7 +26,7 @@ def normalize(input,drug):
 
     #match measure  250 mg
     p4 = re.compile("\d+\.*\d+\s*"+"("+before+")")
-    input = p4.sub(" INTEGER MEASURE_UNIT ",input)
+    input = p4.sub(" MEASURE_UNIT ",input)
 
     #match ratio
     p8 = re.compile("\d+\s*:\s*\d+")
@@ -42,18 +43,15 @@ def normalize(input,drug):
     #replace all integers
     p5 = re.compile(r"\b\d+\b")
     input = p5.sub("INTEGER", input)
-
-
-
     return  input
 def main():
     drug = drugbank.Drugbank()
-    str = "Healthy adults, stratified by age (18-64 years and \u226565 years), were\
-        \ randomized (1:1 allocation), in a double-blind, parallel-group design, to\
-        \ receive two intramuscular doses (21 days apart) of vaccine containing approximately\
-        \ 15 \u03BCg or 30 \u03BCg of hemagglutinin (HA)."
-
+    tagger = GeniaTagger('/Users/zhangye/Documents/Study/UTAustin/study/causal_Statement/geniatagger-3.0.1/geniatagger')
+    str = 'After drug washout and a 1- to 3-week antipsychotic-free period,\
+     patients were randomized to treatment with clozapine (n = 12) or olanzapine (n = 13).'
     print normalize(str,drug)
 
+    #print SNOMEDCT.search('In total, 316 subjects were randomized (159 to colesevelam hydrochloride, 3.75 g/d, and 157 to matching placebo).')
+    #for c in SNOMEDCT.CORE_problem_list(): print c
 if __name__ == "__main__":
     main()
